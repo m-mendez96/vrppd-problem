@@ -1,0 +1,4 @@
+[{"id":0,"traffic":3,"pickup_location":[12,8],"delivery_location":[12,5],"distance":3},
+ {"id":1,"traffic":2,"pickup_location":[2,7],"delivery_location":[6,0],"distance":11},
+ {"id":3,"traffic":1,"pickup_location":[4,9],"delivery_location":[6,11],"distance":11}
+]
