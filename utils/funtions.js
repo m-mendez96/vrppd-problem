@@ -47,9 +47,6 @@ function calculate_savings_matrix(distance_matrix) {
     matrix.push(column);
   }
 
-  matrix.forEach(column=> console.log(column.join(", "), `length: ${column.length}`))
-
-
   return matrix;
 }
 
@@ -57,7 +54,7 @@ function map_savings(savings_matrix) {
   var array = [];
 
   for (i = 0; i < savings_matrix.length; i++) {
-    for (j = 0; j < savings_matrix[i].length; j++) {
+    for (j = i+1; j < savings_matrix[i].length; j++) {
       data = {
         node1: i+1,
         node2: j+1,
@@ -177,12 +174,12 @@ function build_steps(ordered_savings, nodes, first_node) {
         pickup.push(ordered_savings[i]["node1"]);
       }
     }
-    console.log("Iteration", i)
-    console.log(ordered_savings[i])
-    console.log(route)
-    console.log(aux)
-    console.log(delivery)
-    console.log(pickup)
+    //console.log("Iteration", i)
+    //console.log(ordered_savings[i])
+    //console.log(route)
+    //console.log(aux)
+    //console.log(delivery)
+    //console.log(pickup)
   }
   route.push(0);
 
