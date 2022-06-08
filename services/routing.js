@@ -9,15 +9,13 @@ class RoutingService {
     plot,
     maximun_distance_between_points)
   {
-    //console.log(maximun_distance, considerer_traffic, plot, maximun_distance_between_points)
     const routes = require('./../payloadTest.json');
     var nodes = get_nodes(routes);
     var distances = calculate_distance_matrix(nodes);
     var saving = calculate_savings_matrix(distances);
     var mapped_savings = map_savings(saving);
     var ordered_savings = sort_json(mapped_savings, 'saving', 'desc');
-    var first_node = get_first_node(distances, nodes);
-    var steps = build_steps(ordered_savings, nodes, first_node);
+    var steps = build_steps(ordered_savings, nodes);
     var route = build_route(steps, nodes);
 
     return {'routeId': 1, 'steps': route};

@@ -97,90 +97,71 @@ function get_first_node(distance_matrix, nodes) {
   return node;
 }
 
-function build_steps(ordered_savings, nodes, first_node) {
+function build_steps(ordered_savings, nodes) {
   var route = [];
-  var pickup = [];
-  var delivery = [];
-  var aux = first_node;
-  route.push(0);
-  route.push(first_node);
-  pickup.push(first_node);
-  ordered_savings = ordered_savings.filter(({saving})=> saving)
+  var pickups = [];
+  var deliveris = [];
+  var top = 0;
+  var botton = 0;
 
-  for (i = 0; i < ordered_savings.length; i++) {
-    if (ordered_savings[i]["node1"] === first_node && aux === first_node) {
-      if (nodes[ordered_savings[i]["node2"]][1] === "pickup") {
-        route.push(ordered_savings[i]["node2"]);
-        aux = ordered_savings[i]["node2"];
-        pickup.push(ordered_savings[i]["node2"]);
-      } else if (pickup.includes(ordered_savings[i]["node1"])){
-        route.push(ordered_savings[i]["node2"]);
-        aux = ordered_savings[i]["node2"];
-        delivery.push(ordered_savings[i]["node2"]);
-      }
-    } else if (
-      ordered_savings[i]["node2"] === first_node &&
-      aux === first_node
-    ) {
-      if (nodes[ordered_savings[i]["node1"]][1] === "pickup") {
-        route.push(ordered_savings[i]["node1"]);
-        aux = ordered_savings[i]["node1"];
-        pickup.push(ordered_savings[i]["node1"]);
-      } else if (pickup.includes(ordered_savings[i]["node1"][2])) {
-        route.push(ordered_savings[i]["node1"]);
-        aux = ordered_savings[i]["node1"];
-        delivery.push(ordered_savings[i]["node1"]);
-      }
-    } else if (
-      route.includes(ordered_savings[i]["node1"]) &&
-      !route.includes(ordered_savings[i]["node2"]) && aux === ordered_savings[i]["node1"]
-    ) {
-      console.log("ENTER IN NODE2 Case")
-      console.log(nodes[ordered_savings[i]["node2"]][1])
-      console.log(nodes[ordered_savings[i]["node1"]][2])
+  for(i = 0; i < ordered_savings.length; i++){
+    if (route.length === 0){
       if (
-        nodes[ordered_savings[i]["node2"]][1] === "delivery" &&
-        pickup.includes(nodes[ordered_savings[i]["node2"]][2])
-      ) {
-        route.push(ordered_savings[i]["node2"]);
-        aux = ordered_savings[i]["node2"];
-        delivery.push(ordered_savings[i]["node2"]);
+        nodes[ordered_savings[i]['node1']][1] === 'pickup' &&
+        nodes[ordered_savings[i]['node2']][1] === 'pickup'
+      ){
+        route.push(ordered_savings[i]['node1']);
+        route.push(ordered_savings[i]['node2']);
+        pickups.push(ordered_savings[i]['node1']);
+        pickups.push(ordered_savings[i]['node2']);
+        top = ordered_savings[i]['node1'];
+        botton = ordered_savings[i]['node2'];
       } else if (
-        nodes[ordered_savings[i]["node2"]][1] === "pickup" &&
-        aux === ordered_savings[i]["node1"]
-      ) {
-        route.push(ordered_savings[i]["node2"]);
-        aux = ordered_savings[i]["node2"];
-        pickup.push(ordered_savings[i]["node2"]);
+        nodes[ordered_savings[i]['node1']][1] === 'pickup' && 
+        nodes[ordered_savings[i]['node2']][1] === 'delivery' && 
+        ordered_savings[i]['node1'] === nodes[ordered_savings[i]['node2']][2] &&
+        ordered_savings[i]['node2'] === nodes[ordered_savings[i]['node1']][2]
+      ){
+        route.push(ordered_savings[i]['node1']);
+        route.push(ordered_savings[i]['node2']);
+        pickups.push(ordered_savings[i]['node1']);
+        deliveris.push(ordered_savings[i]['node2']);
+        top = ordered_savings[i]['node1'];
+        botton = ordered_savings[i]['node2'];
+      } else if (
+        nodes[ordered_savings[i]['node2']][1] === 'pickup' && 
+        nodes[ordered_savings[i]['node1']][1] === 'delivery' && 
+        ordered_savings[i]['node2'] === nodes[ordered_savings[i]['node1']][2] &&
+        ordered_savings[i]['node1'] === nodes[ordered_savings[i]['node2']][2])
+      {
+        route.push(ordered_savings[i]['node2']);
+        route.push(ordered_savings[i]['node1']);
+        pickups.push(ordered_savings[i]['node2']);
+        deliveris.push(ordered_savings[i]['node1']);
+        top = ordered_savings[i]['node2'];
+        botton = ordered_savings[i]['node1'];
       }
-    } else if (
-      route.includes(ordered_savings[i]["node2"]) &&
-      !route.includes(ordered_savings[i]["node1"]) &&
-      aux === ordered_savings[i]["node2"]
-    ) {
-      if (
-        nodes[ordered_savings[i]["node1"]][1] === "delivery" &&
-        pickup.includes(nodes[ordered_savings[i]["node2"]][2])
-      ) {
-        route.push(ordered_savings[i]["node1"]);
-        aux = ordered_savings[i]["node1"];
-        delivery.push(ordered_savings[i]["node1"]);
-      } else if (
-        nodes[ordered_savings[i]["node1"]][1] === "pickup" &&
-        aux === ordered_savings[i]["node2"]
-      ) {
-        route.push(ordered_savings[i]["node1"]);
-        aux = ordered_savings[i]["node1"];
-        pickup.push(ordered_savings[i]["node1"]);
+    } else if (ordered_savings[i]['node1'] in route && ordered_savings[i]['node2'] in route){
+      continue;
+    } else if (route.includes(ordered_savings[i]['node1']) && !(route.includes(ordered_savings[i]['node2']))){
+      if (ordered_savings[i]['node1'] === top){
+        route.unshift(ordered_savings[i]['node2']);
+        top = ordered_savings[i]['node2'];
+      } else if (ordered_savings[i]['node1'] === botton){
+        route.push(ordered_savings[i]['node2']);
+        botton = ordered_savings[i]['node2'];
+      }
+    } else if (route.includes(ordered_savings[i]['node2']) && !(route.includes(ordered_savings[i]['node1']))){
+      if (ordered_savings[i]['node2'] === top){
+        route.unshift(ordered_savings[i]['node1']);
+        top = ordered_savings[i]['node1'];
+      } else if (ordered_savings[i]['node2'] === botton){
+        route.push(ordered_savings[i]['node1']);
+        botton = ordered_savings[i]['node1'];
       }
     }
-    //console.log("Iteration", i)
-    //console.log(ordered_savings[i])
-    //console.log(route)
-    //console.log(aux)
-    //console.log(delivery)
-    //console.log(pickup)
   }
+  route.unshift(0);
   route.push(0);
 
   return route;
