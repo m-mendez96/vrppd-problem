@@ -105,6 +105,8 @@ function build_steps(ordered_savings, nodes) {
   var botton = 0;
 
   for(i = 0; i < ordered_savings.length; i++){
+    //console.log('Iter:'+i, ordered_savings[i], route, top, botton);
+
     if (route.length === 0){
       if (
         nodes[ordered_savings[i]['node1']][1] === 'pickup' &&
@@ -141,7 +143,7 @@ function build_steps(ordered_savings, nodes) {
         top = ordered_savings[i]['node2'];
         botton = ordered_savings[i]['node1'];
       }
-    } else if (ordered_savings[i]['node1'] in route && ordered_savings[i]['node2'] in route){
+    } else if (route.includes(ordered_savings[i]['node1']) && route.includes(ordered_savings[i]['node2'])){
       continue;
     } else if (route.includes(ordered_savings[i]['node1']) && !(route.includes(ordered_savings[i]['node2']))){
       if (ordered_savings[i]['node1'] === top){

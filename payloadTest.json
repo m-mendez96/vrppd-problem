@@ -1,5 +1,6 @@
 [{"id":0,"traffic":3,"pickup_location":[15,45],"delivery_location":[28,26],"distance":32},
  {"id":1,"traffic":2,"pickup_location":[26,57],"delivery_location":[18,17],"distance":48},
  {"id":2,"traffic":3,"pickup_location":[33,57],"delivery_location":[27,41],"distance":22},
- {"id":3,"traffic":5,"pickup_location":[39,19],"delivery_location":[55,15],"distance":20}
+ {"id":3,"traffic":5,"pickup_location":[39,19],"delivery_location":[55,15],"distance":20},
+ {"id":4,"traffic":2,"pickup_location":[35,45],"delivery_location":[15,36],"distance":29}
 ]
